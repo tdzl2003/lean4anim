@@ -1,3 +1,7 @@
+# 关于开源协议
+
+本项目的开源协议尚未决定，由于项目正处在初期开发中，暂时请勿引用本项目 或 用于商业项目，本Repo的所有代码仅可用作学习参考。
+
 # Work In Progress
 
 尝试使用[lean4](https://lean-lang.org/)构建一个动画引擎。
@@ -25,7 +29,7 @@ Lean ->> JS: Render Call for frames
 JS ->> JS: Render
 ```
 
-- [ ] JS构建和加载流程
+- [x] JS构建和加载流程
 - [ ] Lean Widget基础定义
 - [ ] 2D Canvas渲染器
     - [ ] Renderer实现和简单图元渲染：点、线

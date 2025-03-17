@@ -1,0 +1,7 @@
+name = "anim"
+version = "0.1.0"
+defaultTargets = ["Anim"]
+
+[[lean_lib]]
+name = "Anim"
+
