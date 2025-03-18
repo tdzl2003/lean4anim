@@ -3,5 +3,6 @@ import React from "react";
 interface AnimWidgetProps {}
 
 export default function AnimWidget(props: AnimWidgetProps) {
-  return <div>Hello, widget!</div>;
+  const content = JSON.stringify(props);
+  return <div>{content}</div>;
 }
