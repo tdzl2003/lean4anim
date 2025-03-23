@@ -1,5 +1,5 @@
 import Lean
-import Anim.Demos.File1
+import Anim.Demos.Stage1
 
 open Lean Elab Command
 open Server RequestM

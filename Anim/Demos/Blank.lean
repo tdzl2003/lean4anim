@@ -1,5 +1,5 @@
-import Anim.Demos.File1
-import Anim.Demos.File2
+import Anim.Demos.Stage1
+import Anim.Demos.Stage2
 
 def MyTwoStageStructure: TwoStageStructure := {
   stage1 := "Hello",

@@ -29,6 +29,10 @@ Lean ->> JS: Render Call for frames
 JS ->> JS: Render
 ```
 
+> 经过试验，以上流程确实可以完成，但是存在限制：有时候会存在根据不同条件加载不同资源的场景，无法保证一次交互的信息足够完备。
+> 而Lean侧无法为widget rpc提供信息缓存，所以难以保证交互的次数 和 可终止
+> 另一个思路是跳出widget rpc，自行实现其他的RPC方案
+
 - [x] JS构建和加载流程
 - [ ] Lean Widget基础定义
 - [ ] 2D Canvas渲染器
