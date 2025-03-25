@@ -1,11 +1,14 @@
-import Anim.Demos.Stage1
-import Anim.Demos.Stage2
+import Anim.Types
+import Anim.Widget
 
-def MyTwoStageStructure: TwoStageStructure := {
-  stage1 := "Hello",
-  stage2 := fun s => s ++ " World"
-}
+open Anim
 
-#eval 1
+def SomeRequest: AnimM String := do
+  AnimM.request {type := "SomeRequest"} (fun resp => AnimM.pure resp.resp)
 
-#ts_widget MyTwoStageStructure
+def Demo : Anim := do
+  let resp ← SomeRequest
+  return {width:= 1080, height:= 1920: Scene}
+
+
+#anim Demo
