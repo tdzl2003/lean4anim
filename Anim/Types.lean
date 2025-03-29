@@ -1,23 +1,50 @@
 import Lean
-import Lean.Server.Rpc
 
 open Lean
 
 namespace Anim
 
-structure Scene where
+structure Point where
+  x: Float := 0
+  y: Float := 0
+deriving Repr, FromJson, ToJson, TypeName
+
+structure Color where
+  r: Float := 0
+  g: Float := 0
+  b: Float := 0
+  a: Float := 1
+deriving Repr, FromJson, ToJson, TypeName
+
+inductive RenderCall where
+  | clear (color: Color)
+  | point (center: Point) (radius : Float) (color: Color)
+  | line (p1 p2: Point) (color: Color)
+deriving Repr, FromJson, ToJson, TypeName
+
+structure SceneMeta where
   width: Nat
   height: Nat
+deriving Repr, FromJson, ToJson, TypeName
+
+structure Scene where
+  meta: SceneMeta
 deriving Repr
 
 structure FinalOutput where
-  width: Nat
-  height: Nat
+  meta: SceneMeta
+  frames: List (List RenderCall)
 deriving FromJson, ToJson, TypeName
 
 def Scene.toFinalOutput (s: Scene): FinalOutput := {
-  width := s.width,
-  height := s.height
+  meta := s.meta,
+  frames := [
+    [
+      RenderCall.clear {r := 0.0, g := 0.0, b := 0.0, a := 1.0},
+      RenderCall.point {x := 10.0, y := 10.0} 5.0 {r := 1.0, g := 1.0, b := 1.0, a := 1.0},
+      RenderCall.line {x := 20.0, y := 20.0} {x := 30.0, y := 30.0} {r := 1.0, g := 1.0, b := 1.0, a := 1.0}
+    ]
+   ],
 }
 
 -- Monad for Anim
@@ -44,5 +71,3 @@ instance : Monad AnimM where
   pure := AnimM.pure
 
 end Anim
-
-#check IO

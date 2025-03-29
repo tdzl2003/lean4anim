@@ -1,21 +1,9 @@
 import React, { useEffect } from "react";
 import { useRpcSession, useAsync, mapRpcError } from "@leanprover/infoview";
+import { AnimRpcResult } from "./types";
+import Canvas from "./Canvas";
 
-type Scene = {
-  width: number;
-  height: number;
-};
-
-type Anim =
-  | {
-      pure: Scene;
-    }
-  | {
-      request: string;
-      cont: unknown;
-    };
-
-export default function AnimWidget(props: Anim) {
+export default function AnimWidget(props: AnimRpcResult) {
   const rs = useRpcSession();
 
   const st = useAsync(async () => {
@@ -25,7 +13,7 @@ export default function AnimWidget(props: Anim) {
         return curr.pure;
       }
 
-      curr = await rs.call<unknown, Anim>("Anim.runContinue", {
+      curr = await rs.call<unknown, AnimRpcResult>("Anim.runContinue", {
         resp: { resp: "Resp" },
         cont: curr.cont,
       });
@@ -34,9 +22,15 @@ export default function AnimWidget(props: Anim) {
 
   return (
     <div>
-      <div>Stage 1 props:{JSON.stringify(props)}</div>
-      <div>st.state</div>
-      {st.state === "resolved" && <div>{JSON.stringify(st.value)}</div>}
+      {st.state === "resolved" && (
+        <div>
+          <Canvas
+            width={st.value.meta.width}
+            height={st.value.meta.height}
+            frame={st.value.frames[0]}
+          />
+        </div>
+      )}
       {st.state === "rejected" && <div>{mapRpcError(st.error).message}</div>}
       {st.state === "loading" && <div>Loading...</div>}
     </div>
