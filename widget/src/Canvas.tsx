@@ -20,6 +20,7 @@ function doRender(canvas: HTMLCanvasElement, frame: RenderCall[]) {
   for (const call of frame) {
     if ("clear" in call) {
       ctx.fillStyle = colorToString(call.clear.color);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     } else if ("point" in call) {
       const { center, radius, color } = call.point;

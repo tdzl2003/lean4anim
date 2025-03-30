@@ -18,7 +18,11 @@ export default function AnimWidget(props: AnimRpcResult) {
         cont: curr.cont,
       });
     }
-  }, [(props as any).pure, (props as any).request, (props as any).cont]);
+  }, [
+    (props as any).pure || null,
+    (props as any).request || null,
+    (props as any).cont || null,
+  ]);
 
   return (
     <div>

@@ -38,23 +38,25 @@ deriving FromJson, ToJson, TypeName
 
 def Scene.toFinalOutput (s: Scene): FinalOutput := {
   meta := s.meta,
+  -- 模拟数据，因为动画生成流程尚未实现
   frames := [
     [
       RenderCall.clear {r := 0.0, g := 0.0, b := 0.0, a := 1.0},
       RenderCall.point {x := 10.0, y := 10.0} 5.0 {r := 1.0, g := 1.0, b := 1.0, a := 1.0},
       RenderCall.line {x := 20.0, y := 20.0} {x := 30.0, y := 30.0} {r := 1.0, g := 1.0, b := 1.0, a := 1.0}
     ]
-   ],
+  ],
 }
 
 -- Monad for Anim
 structure Request where
   type: String
-deriving Repr, FromJson, ToJson
+  args: Option Json
+deriving FromJson, ToJson
 
 structure Response where
-  resp: String
-deriving Repr, FromJson, ToJson
+  resp: Json
+deriving FromJson, ToJson
 
 inductive AnimM(α: Type) where
   | pure (a: α)
@@ -69,5 +71,10 @@ def AnimM.bind {α β: Type} (x: AnimM α) (f: α → AnimM β): AnimM β := mat
 instance : Monad AnimM where
   bind := AnimM.bind
   pure := AnimM.pure
+
+-- 发送一个请求到JS端处理，然后继续流程
+def request (type: String) (args: Option Json): AnimM Response := do
+  let r ← AnimM.request {type := type, args := args} fun resp => pure resp
+  return r
 
 end Anim
